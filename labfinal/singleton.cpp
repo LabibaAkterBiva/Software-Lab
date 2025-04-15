@@ -15,7 +15,7 @@ private:
     }
 
 public:
-    static StudentManager* getInstance() {
+static StudentManager* getInstance() {
         if (instance == nullptr) {
             instance = new StudentManager();
         }
@@ -35,7 +35,6 @@ public:
                 return;
             }
         }
-        cout << "Student not found: " << name << endl;
     }
 
     void displayStudents() {
@@ -45,26 +44,25 @@ public:
         }
         cout << "List of students:" << endl;
         for (const auto& student : students) {
-            cout << "- " << student << endl;
+            cout << student << endl;
         }
     }
 };
 
-// Initialize static member
 StudentManager* StudentManager::instance = nullptr;
 
 int main() {
     StudentManager* obj1 = StudentManager::getInstance();
     StudentManager* obj2 = StudentManager::getInstance();
 
-    obj1->addStudent("Alice");
-    obj2->addStudent("Bob");
-    obj2->addStudent("Charlie"); // Same instance as mgr1
+    obj1->addStudent("Biva");
+    obj2->addStudent("Rayna");
+    obj2->addStudent("Lamisha"); 
 
     obj1->displayStudents();
 
-    obj2->removeStudent("Bob");
-    obj1->displayStudents(); // Bob should be gone
+    obj2->removeStudent("Rayna");
+    obj1->displayStudents(); 
 
     cout << "\nAre mgr1 and mgr2 the same instance? "
          << (obj1 == obj2 ? "Yes" : "No") << endl;
