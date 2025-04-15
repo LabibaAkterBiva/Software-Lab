@@ -1,46 +1,73 @@
+
 #include<iostream>
+#include <vector>
+#include <string>
 using namespace std;
 
-#include <iostream>
-using namespace std;
+class StudentManager {
+private:
+    static StudentManager* instance;
+    vector<string> students;
 
-class Student {
+    // Private constructor
+    StudentManager() {
+        cout << "A new StudentManager object has been created." << endl;
+    }
 
+public:
+    static StudentManager* getInstance() {
+        if (instance == nullptr) {
+            instance = new StudentManager();
+        }
+        return instance;
+    }
+
+    void addStudent(const string& name) {
+        students.push_back(name);
+        cout << "Added student: " << name << endl;
+    }
+
+    void removeStudent(const string& name) {
+        for (auto it = students.begin(); it != students.end(); ++it) {
+            if (*it == name) {
+                cout << "Removed student: " << name << endl;
+                students.erase(it);
+                return;
+            }
+        }
+        cout << "Student not found: " << name << endl;
+    }
+
+    void displayStudents() {
+        if (students.empty()) {
+            cout << "No students to display." << endl;
+            return;
+        }
+        cout << "List of students:" << endl;
+        for (const auto& student : students) {
+            cout << "- " << student << endl;
+        }
+    }
 };
-// private:
-//     static Government* instance;
 
-//     // Private constructor to prevent instantiation
-//     Government() {
-//         cout << "\nA new government has been formed." << endl;
-//     }
+// Initialize static member
+StudentManager* StudentManager::instance = nullptr;
 
-// public:
-//     // Static method to get the singleton instance
-//     static Government* getInstance() {
-//         if (instance == nullptr) {
-//             instance = new Government();
-//         }
-//         return instance;
-//     }
+int main() {
+    StudentManager* obj1 = StudentManager::getInstance();
+    StudentManager* obj2 = StudentManager::getInstance();
 
-//     void govern(const string& message) {
-//         cout << "Government action: " << message << endl;
-//     }
-// };
+    obj1->addStudent("Alice");
+    obj2->addStudent("Bob");
+    obj2->addStudent("Charlie"); // Same instance as mgr1
 
-// // Initialize the static member
-// Government* Government::instance = nullptr;
+    obj1->displayStudents();
 
-// int main() {
-//     Government* Gov1 = Government::getInstance();
-//     Government* Gov2 = Government::getInstance();
+    obj2->removeStudent("Bob");
+    obj1->displayStudents(); // Bob should be gone
 
-//     Gov1->govern("Implementing new policies.");
-//     Gov2->govern("Addressing national security.");
+    cout << "\nAre mgr1 and mgr2 the same instance? "
+         << (obj1 == obj2 ? "Yes" : "No") << endl;
 
-//     cout << "Gov1 and Gov2 are the same Government: "
-//          << (Gov1 == Gov2 ? "true" : "false") << endl;
-
-//     return 0;
-// }
+    return 0;
+}
